@@ -1,0 +1,29 @@
+{
+  "consumer": {
+    "name": "angular-user-service"
+  },
+  "provider": {
+    "name": "rest-user-service"
+  },
+  "interactions": [
+    {
+      "description": "a user request",
+      "request": {
+        "method": "GET",
+        "path": "/user"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"name\": \"David Server\"}"
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
