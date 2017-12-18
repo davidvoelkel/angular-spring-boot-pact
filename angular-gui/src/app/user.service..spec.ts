@@ -16,30 +16,27 @@ describe('UserService', () => {
 
     let provider;
 
-    beforeAll((done) => {
-        //      client = example.createClient('http://localhost:1234')
-        provider = Pact({ consumer: 'hello-client', provider: 'hello-service', web: true });
+    beforeAll(() => {
+        provider = Pact({
+            consumer: 'angular-user-service',
+            provider: 'rest-user-service',
+            web: true
+        });
 
         // required for slower Travis CI environment
         // setTimeout(function () { done(); }, 2000);
 
         // Required if run with `singleRun: false`
         provider.removeInteractions();
-        done();
     });
 
-    afterAll((done) => {
-        console.log('finalize');
-        provider.finalize()
-                .then(  () => { done(); },
-                        (err) => { done.fail(err);
-                });
-    });
+    afterAll(async(() => {
+        provider.finalize();
+    }));
 
-    describe('sayHello', () => {
+    describe('getUser()', () => {
 
-        beforeAll(function (done) {
-            console.log('addInteraction())');
+        beforeAll(() => {
             provider.addInteraction({
                 uponReceiving: 'a request for say hello',
                 withRequest: {
@@ -51,11 +48,7 @@ describe('UserService', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: '{"name": "David Server"}'
                 }
-            })
-            .then(function () {
-                console.log('addInteraction() done)');
-                done(); 
-            }, function (err) { done.fail(err); });
+            });
         });
 
         it('getUser()', async(() =>  {
@@ -66,15 +59,10 @@ describe('UserService', () => {
             });
         }));
 
-         // verify with Pact, and reset expectations
-      it('successfully verifies', function(done) {
-        provider.verify()
-          .then(function(a) {
-            done();
-          }, function(e) {
-            done.fail(e);
-          });
-      });
+      // verify with Pact, and reset expectations
+      it('successfully verifies', async(() => {
+        return provider.verify();
+      }));
 
     });
 

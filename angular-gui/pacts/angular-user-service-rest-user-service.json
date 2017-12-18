@@ -7,7 +7,7 @@
   },
   "interactions": [
     {
-      "description": "a user request",
+      "description": "a request for say hello",
       "request": {
         "method": "GET",
         "path": "/user"
