@@ -1,4 +1,4 @@
-package de.codecentric.cdc.demo;
+package de.codecentric.cdc.demo.user;
 
 public class User {
     private String name;

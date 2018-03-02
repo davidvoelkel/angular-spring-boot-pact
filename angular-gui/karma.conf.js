@@ -13,12 +13,18 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular/cli/plugins/karma')
     ],
-    pact: [{cors: false, spec: 2, port: 1234, dir: 'pacts/'}],  // 3) configure one or multiple pact-mock-services here
-    proxies: { // 4) here we can define proxies to redirect requests from our pact tests to the mock server
-      '/api': 'http://localhost:1234'
+    
+    // Pact-JS Config
+    pact: [ 
+      {cors: false, spec: 2, port: 1234, dir: 'pacts/', consumer: 'angular-user-service', provider: 'rest-user-service'}, 
+    ],
+    proxies: { // Proxies for Pact
+      // Define one proxy per endpoint to proxy requests from our pact tests running in the karma browser to the pact mock servers
+      '/user': 'http://localhost:1234/user'
     },
+
     client:{
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false 
     },
     coverageIstanbulReporter: {
       reports: [ 'html', 'lcovonly' ],

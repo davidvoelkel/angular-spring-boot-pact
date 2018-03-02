@@ -8,17 +8,13 @@ import 'rxjs/Rx';
 @Injectable()
 export class UserService {
 
-    constructor(public http: HttpClient) {}
+    constructor(public httpClient: HttpClient) {}
 
-    public getUser(): Observable<User> {
-        return this.http.get<User>('/api/user')
-        .catch(error => {
-            console.log(error);
-            return Observable.of(new User(error));
-         });
+    public getUser(alias: String): Observable<User> {
+        return this.httpClient.get<User>('/user/' + alias);
     }
 }
 
 export class User {
-    constructor(public name: String) {}
+    constructor(public name: String, public email: String) {}
 }
