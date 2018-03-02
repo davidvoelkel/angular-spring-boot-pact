@@ -1,50 +1,29 @@
-import { async, TestBed } from '@angular/core/testing';
-import { UserService } from './user.service';
-import { HttpModule, BrowserXhr } from '@angular/http';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { HttpHandler } from '@angular/common/http';
-import { inject } from '@angular/core/testing';
-import { fail } from 'assert';
-import { JSONPBackend } from '@angular/http';
-import { HttpInterceptorHandler } from '@angular/common/http/src/interceptor';
-import { HttpXhrBackend } from '@angular/common/http';
-import { MockBackend } from '@angular/http/testing';
-import { XhrFactory } from '@angular/common/http/src/xhr';
+import {UserService} from './user.service';
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {TestBed} from "@angular/core/testing";
 
-const Pact = require('pact-web');
+describe('UserService Mocktest', () => {
 
-describe('UserService', () => {
+  let httpMock: HttpTestingController;
+  let userService: UserService;
 
-    describe('XXXXXXX', () => {
-        beforeAll((done) => {
-            // const httpClient = new HttpClient(new HttpXhrBackend(new MockBackend()));
-            // const userService = new UserService(httpClient);
-            // provider.addInteraction({
-            //     uponReceiving: 'a request for say hello',
-            //     withRequest: {
-            //         method: 'GET',
-            //         path: '/user',
-            //     },
-            //     willRespondWith: {
-            //         status: 200,
-            //         headers: { 'Content-Type': 'application/json' },
-            //         body: '{"name": "David"}'
-            //     }
-            // }).then(done, done.fail);
-            done();
-        });
-        
-        it('YYYYYYY', (done) =>  {
-            // const httpClient = new HttpClient(new HttpXhrBackend(new BrowserXhr()));
-            // const userService = new UserService(httpClient);
-            
-            // userService.getUser().subscribe((user) => {
-                //     expect(user.name).toBe('David');
-                //     // verify with Pact, and reset expectations
-                //     return provider.verify()
-                //                    .then(done, done.fail);
-                // });
-            done();
-        });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports:   [HttpClientTestingModule],
+      providers: [UserService]
+    });
+    httpMock =    TestBed.get(HttpTestingController);
+    userService = TestBed.get(UserService);
+  });
+
+  it('getUser()', () => {
+      userService.getUser('david79')
+                 .subscribe((user) => {
+                   expect(user.name).toBe('David');
+                   expect(user.email).toBe('david@gmail.com');
+                 });
+      httpMock.expectOne('/user/david79')
+              .flush({'name': 'David', 'email': 'david@gmail.com' });
+      httpMock.verify();
     });
 });
