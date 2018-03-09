@@ -11,10 +11,12 @@ export class UserService {
     constructor(public httpClient: HttpClient) {}
 
     public getUser(alias: String): Observable<User> {
-        return this.httpClient.get<User>('/user/' + alias);
+      const url = '/user/' + alias;
+      return this.httpClient.get<User>(url);
     }
 }
 
-export class User {
-    constructor(public name: String, public email: String) {}
+export interface User {
+    name: String;
+    email: String;
 }

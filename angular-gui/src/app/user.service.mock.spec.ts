@@ -16,14 +16,14 @@ describe('UserService Mocktest', () => {
     userService = TestBed.get(UserService);
   });
 
-  it('getUser()', () => {
-      userService.getUser('david79')
-                 .subscribe((user) => {
-                   expect(user.name).toBe('David');
-                   expect(user.email).toBe('david@gmail.com');
-                 });
-      httpMock.expectOne('/user/david79')
-              .flush({'name': 'David', 'email': 'david@gmail.com' });
-      httpMock.verify();
-    });
+  it('getUser() delivers a user from REST response', () => {
+    userService.getUser('david79')
+               .subscribe((user) => {
+                 expect(user.name).toBe('David');
+                 expect(user.email).toBe('david@gmail.com');
+               });
+    httpMock.expectOne('/user/david79')
+            .flush({'name': 'David', 'email': 'david@gmail.com' });
+    httpMock.verify();
+  });
 });

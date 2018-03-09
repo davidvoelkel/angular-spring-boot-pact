@@ -12,9 +12,12 @@ describe('UserService', () => {
   afterAll(pactSetUp.afterAll);
 
   describe('getUser()', () => {
+
+    const userService = new UserService(pactSetUp.getHttpClient())
+
     beforeAll((done) => {
       pactSetUp.addInteraction({
-        uponReceiving: 'GET /user',
+        uponReceiving: 'GET /user/david79',
         withRequest: {
           method: 'GET',
           path: '/user/david79',
@@ -22,17 +25,19 @@ describe('UserService', () => {
         willRespondWith: {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
-          body: {'name': 'David', 'email': 'david@gmail.com' }
+          body: {name: 'David', email: 'david@gmail.com' }
         }
       }, done);
     });
 
-    it('calls GET on /user endpoint and delivers a valid user object from the response', (done) => {
-      const userService = new UserService(pactSetUp.getHttpClient());
+    it('calls GET on /user endpoint and delivers a valid user object from the response',
+      (done) => {
       userService.getUser('david79')
                  .subscribe((user) => {
+
         expect(user.name).toBe('David');
         expect(user.email).toBe('david@gmail.com');
+
         pactSetUp.verify(done);
       });
     });

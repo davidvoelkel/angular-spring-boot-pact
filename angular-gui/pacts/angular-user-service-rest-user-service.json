@@ -7,7 +7,7 @@
   },
   "interactions": [
     {
-      "description": "GET /user",
+      "description": "GET /user/david79",
       "request": {
         "method": "GET",
         "path": "/user/david79"
