@@ -99,4 +99,8 @@ public class PactTestSetup implements ApplicationListener<EmbeddedServletContain
     private HashMap noErrors() {
         return new HashMap();
     }
+
+    public RequestResponseInteraction getInteraction() {
+        return getInteractions().get(0);
+    }
 }
