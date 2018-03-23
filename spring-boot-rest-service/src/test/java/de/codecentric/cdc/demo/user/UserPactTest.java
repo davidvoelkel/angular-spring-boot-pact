@@ -16,23 +16,18 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserPactTest {
 
-    @MockBean
-    UserRepository userRepositoryMock;
-
-    @Autowired
-    PactTestSetup pactSetup;
+    @MockBean UserRepository userRepositoryMock;
+    @Autowired PactTestSetup pactSetup;
 
     @Test
     public void getUser() {
-        pactSetup.loadPactFile("angular-user-service-rest-user-service.json");
-
-        User user = new User();
-        user.setName("David");
-        user.setEmail("david@gmail.com");
-
         // mock repository below the controller
         when(userRepositoryMock.findUserByAlias("david79"))
-                               .thenReturn(user);
+                               .thenReturn(new User()
+                                                    .withName("David")
+                                                    .withEmail("david@gmail.com"));
+
+        pactSetup.loadPactFile("angular-user-service-rest-user-service.json");
 
         RequestResponseInteraction interaction = pactSetup.getInteraction();
 
@@ -45,5 +40,4 @@ public class UserPactTest {
 
         pactSetup.requestShouldLeadToInteraction(userRequest, interaction);
     }
-
 }

@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-    @Autowired
-    UserRepository userRepository;
+
+    @Autowired UserRepository userRepository;
 
     @RequestMapping("/user/{alias}")
     public User user(@PathVariable String alias) {
         return userRepository.findUserByAlias(alias);
     }
-
 }
