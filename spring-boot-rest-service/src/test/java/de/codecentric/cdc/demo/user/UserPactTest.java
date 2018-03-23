@@ -3,7 +3,6 @@ package de.codecentric.cdc.demo.user;
 import au.com.dius.pact.model.Request;
 import au.com.dius.pact.model.RequestResponseInteraction;
 import de.codecentric.cdc.demo.PactTestSetup;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +17,22 @@ import static org.mockito.Mockito.when;
 public class UserPactTest {
 
     @MockBean
-    UserRepository userRepository;
+    UserRepository userRepositoryMock;
 
     @Autowired
     PactTestSetup pactSetup;
 
-    @Before
-    public void setup() {
-        pactSetup.loadPactFile("angular-user-service-rest-user-service.json");
-    }
-
     @Test
-    public void requestUser() {
+    public void getUser() {
+        pactSetup.loadPactFile("angular-user-service-rest-user-service.json");
 
-        // mock stuff below the controller
         User user = new User();
         user.setName("David");
         user.setEmail("david@gmail.com");
-        when(userRepository.findUserByAlias("david79"))
-                           .thenReturn(user);
+
+        // mock repository below the controller
+        when(userRepositoryMock.findUserByAlias("david79"))
+                               .thenReturn(user);
 
         RequestResponseInteraction interaction = pactSetup.getInteractions()
                                                           .get(0);
