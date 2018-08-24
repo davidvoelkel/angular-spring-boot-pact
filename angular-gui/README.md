@@ -13,7 +13,7 @@ This project contains an example on how [Pact JS](https://github.com/pact-founda
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 * [pacts/*](pacts/): contains all JSON Pact files that are saved by the Pact mock server
 * [user.service.ts](src/app/user.service.ts): contains the UserService under test
-* [src/app/user.service.pact.spec.ts](src/app/user.service.pact.spec.ts) is the **actual Pact test**, that specifies the expected interactions against the mock server 
-* [src/app/user.service.mock.spec.ts](src/app/user.service.mock.spec.ts) is how the Pact test would traditionally be done with Angular's [HttpClientTestingModule](https://angular.io/guide/http#testing-http-requests)
+* [user.service.pact.spec.ts](src/app/user.service.pact.spec.ts) is the **actual Pact test**, that specifies the expected interactions against the mock server 
+* [user.service.mock.spec.ts](src/app/user.service.mock.spec.ts) is how the Pact test would traditionally be done with Angular's [HttpClientTestingModule](https://angular.io/guide/http#testing-http-requests)
 * [pact.test.setup.ts](src/app/pact.test.setup.ts): contains some test helper stuff to make the actual Pact tests more crisp.
 
