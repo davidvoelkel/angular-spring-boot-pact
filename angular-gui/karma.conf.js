@@ -7,24 +7,28 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular/cli', 'pact'],
     plugins: [
       require('karma-jasmine'),
-      require('@pact-foundation/karma-pact'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular/cli/plugins/karma'),
+
+// Pact JS Configuration --- START
+      // Start karma-pact, which starts the Pact mock server process(es) at the beginning of your karma session and terminates them at the end
+      require('@pact-foundation/karma-pact'),
     ],
-    
-    // Pact-JS Config
-    pact: [ 
-      {cors: false, spec: 2, port: 1234, dir: 'pacts/', consumer: 'angular-user-service', provider: 'rest-user-service'}, 
+    pact: [
+      // Define a Pact mock server running on port 1234 and storing the files recorded in the "pacts/" directory
+      {cors: false, spec: 2, port: 1234, dir: 'pacts/', consumer: 'angular-user-service', provider: 'rest-user-service'},
     ],
-    proxies: { // Proxies for Pact
-      // Define one proxy per endpoint to proxy requests from our pact tests running in the karma browser to the pact mock servers
+    // Karma-Proxies for Pact to avoid CORS problems, beause Karma runs on a different port than the Pact mock server(s)
+    proxies: {
+      // Define one proxy per endpoint to proxy requests from our pact tests running in the Karma browser to the Pact mock server(s)
       '/user': 'http://localhost:1234/user'
     },
+// Pact JS Configuration --- END
 
     client:{
-      clearContext: false 
+      clearContext: false
     },
     coverageIstanbulReporter: {
       reports: [ 'html', 'lcovonly' ],
