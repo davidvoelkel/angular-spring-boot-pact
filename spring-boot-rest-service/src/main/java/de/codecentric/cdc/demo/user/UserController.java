@@ -10,8 +10,8 @@ public class UserController {
 
     @Autowired UserRepository userRepository;
 
-    @RequestMapping("/user/{alias}")
-    public User user(@PathVariable String alias) {
-        return userRepository.findUserByAlias(alias);
+    @RequestMapping("/user/{userName}")
+    public User user(@PathVariable String userName) {
+        return userRepository.findUserByUserName(userName);
     }
 }

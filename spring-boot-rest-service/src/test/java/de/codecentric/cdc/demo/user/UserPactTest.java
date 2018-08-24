@@ -1,7 +1,5 @@
 package de.codecentric.cdc.demo.user;
 
-import au.com.dius.pact.model.Request;
-import au.com.dius.pact.model.RequestResponseInteraction;
 import de.codecentric.cdc.demo.PactTestSetup;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,23 +19,15 @@ public class UserPactTest {
 
     @Test
     public void getUser() {
-        // mock repository below the controller
-        when(userRepositoryMock.findUserByAlias("david79"))
+        when(userRepositoryMock.findUserByUserName("david79"))
                                .thenReturn(new User()
                                                     .withName("David")
                                                     .withEmail("david@gmail.com"));
 
         pactSetup.loadPactFile("angular-user-service-rest-user-service.json");
 
-        RequestResponseInteraction interaction = pactSetup.getInteraction();
-
-        Request userRequest = interaction.getRequest();
-
-        // You can add here additional stuff to your request, if you don't want to let them be part of the contract.
-        // E.g. authentication stuff from your Auth-Proxy:
-
-        // userRequest.getHeaders().put("Authorization", "Bearer $TEST_AUTH_TOKEN");
-
-        pactSetup.requestShouldLeadToInteraction(userRequest, interaction);
+        pactSetup.requestShouldLeadToInteraction(
+                                                 pactSetup.getInteraction().getRequest(),
+                                                 pactSetup.getInteraction());
     }
 }
