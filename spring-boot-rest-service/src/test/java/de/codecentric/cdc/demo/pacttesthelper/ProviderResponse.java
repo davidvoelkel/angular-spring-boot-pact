@@ -17,39 +17,38 @@ public class ProviderResponse {
     }
 
     public void assertEqualTo(Response expectedResponse) {
+        assertNoMethodDifferencesTo(expectedResponse);
         assertNoHeaderDifferencesTo(expectedResponse);
         assertNoBodyDifferencesTo(expectedResponse);
     }
 
+    private void assertNoMethodDifferencesTo(Response expectedResponse) {
+        assertEquals("response http method",
+                true,
+                differencesComparedTo(expectedResponse).get("method"));
+    }
+
     private void assertNoBodyDifferencesTo(Response expectedResponse) {
         assertEquals("response body comparison errors",
-                noErrors(),
-                bodyDifferences(between(actualResponse, expectedResponse)));
+                noDifferences(),
+                differencesComparedTo(expectedResponse).get("body"));
     }
 
     private void assertNoHeaderDifferencesTo(Response expectedResponse) {
-        headerDifferences(between(actualResponse, expectedResponse))
+        ((Map) differencesComparedTo(expectedResponse).get("headers"))
                 .forEach( (headerName, headerValue) ->
                             assertTrue("Header: " + headerName + " does not match", (boolean) headerValue)
         );
     }
 
-    private Map<String, Object> between(Map<String, Object> actualResponse, Response expectedResponse) {
+    private Map<String, Object> differencesComparedTo(Response expectedResponse) {
         return (Map<String, Object>) compareResponse(expectedResponse,  actualResponse, (int)
                 actualResponse.get("statusCode"), (Map)
                 actualResponse.get("headers"), (String)
                 actualResponse.get("data"));
     }
 
-    private Map headerDifferences(Map<String, Object> comparison) {
-        return (Map) comparison.get("headers");
-    }
-
-    private Object bodyDifferences(Map<String, Object> comparison) {
-        return comparison.get("body");
-    }
-
-    private HashMap noErrors() {
+    private HashMap noDifferences() {
         return new HashMap();
     }
 }
