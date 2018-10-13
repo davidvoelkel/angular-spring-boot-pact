@@ -1,6 +1,9 @@
 package de.codecentric.cdc.demo.user;
 
-import de.codecentric.cdc.demo.PactTestSetup;
+import au.com.dius.pact.model.RequestResponseInteraction;
+import de.codecentric.cdc.demo.pacttesthelper.Interaction;
+import de.codecentric.cdc.demo.pacttesthelper.ProviderResponse;
+import de.codecentric.cdc.demo.pacttesthelper.ProviderSpringBootTestClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,8 @@ import static org.mockito.Mockito.when;
 public class UserPactTest {
 
     @MockBean UserRepository userRepositoryMock;
-    @Autowired PactTestSetup pactSetup;
+    @Autowired
+    ProviderSpringBootTestClient providerClient;
 
     @Test
     public void getUser() {
@@ -24,10 +28,11 @@ public class UserPactTest {
                                                     .withName("David")
                                                     .withEmail("david@gmail.com"));
 
-        pactSetup.loadPactFile("angular-user-service-rest-user-service.json");
+        RequestResponseInteraction interaction =
+                Interaction.readFromPactFile("angular-user-service-rest-user-service.json");
 
-        pactSetup.requestShouldLeadToInteraction(
-                                                 pactSetup.getInteraction().getRequest(),
-                                                 pactSetup.getInteraction());
+        ProviderResponse response = providerClient.send(interaction.getRequest());
+
+        response.assertEqualTo(interaction.getResponse());
     }
 }
