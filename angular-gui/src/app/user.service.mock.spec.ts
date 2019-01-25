@@ -22,7 +22,7 @@ describe('UserService Mocktest', () => {
                  expect(user.name).toBe('David');
                  expect(user.email).toBe('david@gmail.com');
                });
-    httpMock.expectOne('/user/david79')
+    httpMock.expectOne('/api/user/david79')
             .flush({'name': 'David', 'email': 'david@gmail.com' });
     httpMock.verify();
   });

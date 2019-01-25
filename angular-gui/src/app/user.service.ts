@@ -11,7 +11,7 @@ export class UserService {
     constructor(public httpClient: HttpClient) {}
 
     public getUser(alias: String): Observable<User> {
-      const url = '/user/' + alias;
+      const url = '/api/user/' + alias;
       return this.httpClient.get<User>(url);
     }
 }

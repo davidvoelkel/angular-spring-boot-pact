@@ -23,7 +23,7 @@ module.exports = function (config) {
     // Karma-Proxies for Pact to avoid CORS problems, beause Karma runs on a different port than the Pact mock server(s)
     proxies: {
       // Define one proxy per endpoint to proxy requests from our pact tests running in the Karma browser to the Pact mock server(s)
-      '/user': 'http://localhost:1234/user'
+      '/api/user': 'http://localhost:1234/user'
     },
 // Pact JS Configuration --- END
 

@@ -1,7 +1,7 @@
 import {UserService} from './user.service';
 import {PactTestSetup} from './pact.test.setup';
 
-describe('UserService', () => {
+describe('UserService Pact Test', () => {
 
   const pactSetUp = new PactTestSetup({
     consumer: 'angular-user-service', provider: 'rest-user-service',
@@ -30,7 +30,7 @@ describe('UserService', () => {
       }, done);
     });
 
-    it('calls GET on /user endpoint and delivers a valid user object from the response',
+    it('sends HTTP GET to /user endpoint and delivers a valid user object from the response',
       (done) => {
       userService.getUser('david79')
                  .subscribe((user) => {

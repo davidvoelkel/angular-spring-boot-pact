@@ -7,8 +7,9 @@ public class UserRepository {
 
     public User findUserByUserName(String userName) {
 
-        // TODO implement real data access logic here ...
-
-        return null;
+        User user = new User();
+        user.withName("The Real Service's David");
+        user.withEmail("the.real.services.david@gmail.com");
+        return user;
     }
 }
