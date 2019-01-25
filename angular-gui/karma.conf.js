@@ -6,7 +6,7 @@ module.exports = function (config) {
     basePath: '',
     frameworks: [
       'jasmine',
-      '@angular/cli',
+      '@angular-devkit/build-angular',
 
 // Pact JS Configuration --- START
       'pact'
@@ -24,19 +24,17 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular/cli/plugins/karma'),
+      require('@angular-devkit/build-angular/plugins/karma'),
     ],
 
     client:{
       clearContext: false
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
+      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
     },
-    angularCli: {
-      environment: 'dev'
-    },
+    
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
