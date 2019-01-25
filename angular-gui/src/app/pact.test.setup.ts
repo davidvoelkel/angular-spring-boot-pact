@@ -1,7 +1,10 @@
-import {HttpClient, HttpXhrBackend} from '@angular/common/http';
+import {HttpClient, HttpHandler, HttpXhrBackend} from '@angular/common/http';
 import {BrowserXhr} from '@angular/http';
 import * as pact from 'pact-web';
 import * as Pact from 'pact-web';
+import {Observable} from "rxjs/Observable";
+import {HttpEvent} from "@angular/common/http/src/response";
+import {HttpRequest} from "@angular/common/http/src/request";
 
 export interface IPactTestSetupConfig {
   consumer: string;
@@ -20,7 +23,7 @@ export class PactTestSetup {
       provider: config.provider,
       port:     config.port,
     });
-    this.httpClient = new HttpClient(new HttpXhrBackend(new BrowserXhr()));
+    this.httpClient = new HttpClient(new BrowserXhrBackendWithBaseUrl('http://localhost:' + config.port));
   }
 
   getHttpClient(): HttpClient {
@@ -50,5 +53,23 @@ export class PactTestSetup {
   verify(done) {
     this.provider.verify()
                  .then(done, done.fail);
+  }
+}
+
+class BrowserXhrBackendWithBaseUrl implements HttpHandler {
+
+  httpXhrBackend = new HttpXhrBackend(new BrowserXhr());
+
+  constructor(private baseUrl: string) {}
+
+  handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
+    const requestPath = req.url;
+    const urlWithBaseUrl = this.baseUrl + this.cutOffLeadingPrefix(requestPath, '/api');
+
+    return this.httpXhrBackend.handle(req.clone({ url: urlWithBaseUrl }));
+  }
+
+  private cutOffLeadingPrefix(requestPath: string, prefix: string) {
+    return requestPath.substring(prefix.length, requestPath.length);
   }
 }
