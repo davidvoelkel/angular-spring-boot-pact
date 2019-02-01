@@ -4,18 +4,18 @@ import au.com.dius.pact.model.Request;
 import au.com.dius.pact.provider.ProviderClient;
 import au.com.dius.pact.provider.ProviderInfo;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderSpringBootTestClient implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
+public class ProviderSpringBootTestClient implements ApplicationListener<WebServerInitializedEvent> {
 
     private ProviderClient client;
 
     @Override
-    public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
-        int port = event.getEmbeddedServletContainer()
+    public void onApplicationEvent(WebServerInitializedEvent event) {
+        int port = event.getWebServer()
                         .getPort();
 
         client = new ProviderClient(
